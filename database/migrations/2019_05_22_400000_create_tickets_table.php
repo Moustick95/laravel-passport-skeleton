@@ -13,20 +13,25 @@ class CreateTicketsTable extends Migration
      */
     public function up()
     {
-        Schema::table('tickets', function (Blueprint $table) {
+        Schema::create('tickets', function (Blueprint $table) {
             $table -> bigIncrements('id');
             $table -> string('title');
             $table -> string('description');
-            $table -> foreign('owner')
-                   -> references('id')
-                   -> on('users')
-                   -> onDelete('cascade');
+            $table -> unsignedBigInteger('owner');
+            $table -> unsignedBigInteger('assigned');
+            $table -> timestamp('first_assigned') -> nullable();
+            $table -> timestamp('last_assigned') -> nullable();
+            $table -> unsignedBigInteger('priority');
+            $table -> unsignedBigInteger('state');
+            $table -> timestamps();
             $table -> foreign('assigned')
                    -> references('id')
                    -> on('users')
                    -> nullable();
-            $table -> timestamp('first_assigned') -> nullable();
-            $table -> timestamp('last_assigned') -> nullable();
+            $table -> foreign('owner')
+                   -> references('id')
+                   -> on('users')
+                   -> onDelete('cascade');
             $table -> foreign('priority')
                    -> references('id')
                    -> on('priorities');

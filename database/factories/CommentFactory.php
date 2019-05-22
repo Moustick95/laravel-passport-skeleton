@@ -5,9 +5,12 @@
 use App\Comment;
 use Faker\Generator as Faker;
 
+use Faker\Provider\Lorem;
+
 $factory->define(Comment::class, function (Faker $faker) {
+    $faker->addProvider(new Lorem($faker));
     return [
-        'content' => paragraphs(3, true),
+        'content' => $faker -> paragraph(5, true),
         'created_at' => $faker -> date(),
         'updated_at' => $faker -> date()
     ];

@@ -13,7 +13,7 @@ class CreateStatesTable extends Migration
      */
     public function up()
     {
-        Schema::table('states', function (Blueprint $table) {
+        Schema::create('states', function (Blueprint $table) {
             $table -> bigIncrements('id');
             $table -> string('name');
         });

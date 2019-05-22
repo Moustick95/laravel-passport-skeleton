@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 
 use App\User;
 use App\Ticket;
+use App\Comment;
 
 class CommentSeeder extends Seeder
 {
@@ -17,10 +18,9 @@ class CommentSeeder extends Seeder
         $users = User::all();
         $tickets = Ticket::all();
 
-        for($i = 0; $i < 3; $i++)
-            factory(Comment::class) -> create([
-                'owner' => $users -> random(1),
-                'ticket' => $tickets -> random(1),
-            ]); 
+        factory(Comment::class) -> create([
+            'owner' => $users -> random(1) -> first() -> id,
+            'ticket' => $tickets -> random(1) -> first() -> id,
+        ]); 
     }
 }

@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 use App\User;
 use App\Priority;
 use App\State;
+use App\Ticket;
 
 class TicketSeeder extends Seeder
 {
@@ -21,10 +22,10 @@ class TicketSeeder extends Seeder
         
         for($i = 0; $i < 3; $i++)
             factory(Ticket::class) -> create([
-                'owner' => $users -> random(1),
-                'assigned' => $users -> random(1),
-                'priority' => $priorities -> random(1),
-                'state' => $states -> random(1)
+                'owner' => $users -> random(1) -> first() -> id,
+                'assigned' => $users -> random(1) -> first() -> id,
+                'priority' => $priorities -> random(1) -> first() -> id,
+                'state' => $states -> random(1) -> first() -> id
             ]); 
     }
 }

@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
+use App\State;
+
 class StateSeeder extends Seeder
 {
 
@@ -19,9 +21,10 @@ class StateSeeder extends Seeder
      */
     public function run()
     {
-        foreach($this -> states as $state)
-            factory(State::class) -> create([
-                'name' => $state
-            ]);
+        foreach($this -> states as $name) {
+            $state = new State;
+            $state->name = $name;
+            $state->save();
+        }
     }
 }

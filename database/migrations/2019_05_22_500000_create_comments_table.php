@@ -13,8 +13,12 @@ class CreateCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('comments', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table -> bigIncrements('id');
+            $table -> unsignedBigInteger('owner');
+            $table -> unsignedBigInteger('ticket');
+            $table -> text('content');
+            $table -> timestamps();
             $table -> foreign('owner')
                    -> references('id')
                    -> on('users')
@@ -23,8 +27,6 @@ class CreateCommentsTable extends Migration
                     -> references('id')
                     -> on('tickets')
                     -> onDelete('cascade');
-            $table -> bigIncrements('content');
-            $table -> timestamps();
         });
     }
 

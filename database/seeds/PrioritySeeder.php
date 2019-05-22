@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
+use App\Priority;
+
 class PrioritySeeder extends Seeder
 {
 
@@ -18,9 +20,10 @@ class PrioritySeeder extends Seeder
      */
     public function run()
     {
-        foreach($this -> priorities as $priority)
-            factory(Priority::class) -> create([
-                'name' => $priority
-            ]);
+        foreach($this -> priorities as $name){
+            $priority = new Priority;
+            $priority -> name = $name;
+            $priority -> save();
+        }
     }
 }
