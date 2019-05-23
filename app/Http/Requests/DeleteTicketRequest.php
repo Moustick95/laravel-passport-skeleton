@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTokenRequest extends FormRequest
+class DeleteTicketRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,12 @@ class CreateTokenRequest extends FormRequest
      */
     public function authorize()
     {
-        return !$this->user();
+        $user = $this->user();
+        $id = $this->route('id');
+        $owner = DB::table("tickets")->select("owner")->where("id","=",$id)->get();
+        var_dump($user["id"]);
+        var_dump($owner["id"]);
+        return $user["id"] == $owner["id"];
     }
 
     /**
@@ -24,8 +29,7 @@ class CreateTokenRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|string|max:255',
-            'password' => 'required|string|max:255'
+            //
         ];
     }
 }
