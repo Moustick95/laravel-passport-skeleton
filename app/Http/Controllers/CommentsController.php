@@ -3,30 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Request;
+use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB;
+
+use App\Enumerators\ComparatorEnum;
 
 class CommentsController extends Controller
 {
     /**
      * Create comment
-     * @param addComment $request
+     * @param $request
      */
-    public function addComent(Request $request)
+    public function createComment(Request $request)
     {
-        $bodyContent = $request->getContent();
-        $bodyContent->validate([
-            'owner' => 'required',
-            'comment' => 'required'
-        ]);
+        $bodyContent = $request -> getContent();
+        // DB::table('users')->insert(
+        //     ['email' => 'john@example.com', 'votes' => 0]
+        // );
         return response($bodyContent, 200);
     }
 
     /**
      * Get comment
+     * 
      */
     public function getCommentsByParams(Request $request) { 
-        $bodyContent = $request->getContent();
-        return response($bodyContent, 200);
+        $queries = $request -> all();
+        $sql = DB::table('comments');
+        $wheres = [];
+
+        foreach($queries as $key => $query)
+            foreach($query as $where)
+                array_push($wheres, [
+                    $key,
+                    ComparatorEnum::$operators[$where["operator"]],
+                    $where["comparator"]
+                ]);
+        $sql -> where($wheres);
+        return response($sql -> get(), 200);
     }
 
     /**
