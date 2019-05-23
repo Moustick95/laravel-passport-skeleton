@@ -54,13 +54,13 @@ Route::middleware('auth:api')
     ->delete('/tickets/{id}', 'TicketsController@softDeleteTicket');
 
 Route::middleware('auth:api')
-    ->get('/tickets/{ticketId}/comments', 'CommentsController@getCommentsByParams');
+    ->get('/tickets/{ticket}/comments', 'CommentsController@getCommentsByParams');
 
 Route::middleware('auth:api')
-    ->post('/tickets/{ticketId}/comment', 'CommentsController@createComment');
+    ->post('/tickets/{ticket}/comments', 'CommentsController@createComment');
 
 Route::middleware('auth:api')
-    ->delete('/tickets/{ticketId}/comment/{commentId}', 'CommentsController@deleteComment');
+    ->delete('/tickets/{ticket}/comments/{id}', 'CommentsController@deleteComment');
 
 Route::middleware('auth:api')
     ->delete('/tickets/{ticketId}/comment/{commentId}', 'CommentsController@softDeleteComment');
