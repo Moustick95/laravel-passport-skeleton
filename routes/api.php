@@ -34,3 +34,39 @@ Route::middleware('auth:api')
 Route::middleware('auth:api')
     ->get('/user', 'SessionController@getUser')
     ->name('api.session.user');
+
+Route::middleware('auth:api')
+    ->get('/tickets/{id}', 'TicketsController@getTicketById');
+
+Route::middleware('auth:api')
+    ->get('/tickets', 'TicketsController@getTicketsByParams');
+
+Route::middleware('auth:api')
+    ->post('/tickets', 'TicketsController@addTicket');
+    
+Route::middleware('auth:api')
+    ->put('/tickets/{id}', 'TicketsController@updateTicket');
+
+Route::middleware('auth:api')
+    ->delete('/tickets/{id}', 'TicketsController@deleteTicket');
+
+Route::middleware('auth:api')
+    ->delete('/tickets/{id}', 'TicketsController@softDeleteTicket');
+
+Route::middleware('auth:api')
+    ->get('/tickets/{ticketId}/comments', 'CommentsController@getCommentsByParams');
+
+Route::middleware('auth:api')
+    ->post('/tickets/{ticketId}/comment', 'CommentsController@createComment');
+
+Route::middleware('auth:api')
+    ->delete('/tickets/{ticketId}/comment/{commentId}', 'CommentsController@deleteComment');
+
+Route::middleware('auth:api')
+    ->delete('/tickets/{ticketId}/comment/{commentId}', 'CommentsController@softDeleteComment');
+
+
+
+Route::get('/v1', function () {
+    return 'coucou';
+});
