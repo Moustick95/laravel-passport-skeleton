@@ -42,7 +42,7 @@ Route::middleware('auth:api')
     ->get('/tickets', 'TicketsController@getTicketsByParams');
 
 Route::middleware('auth:api')
-    ->post('/tickets', 'TicketsController@addTicket');
+    ->post('/tickets', 'TicketsController@createTicket');
     
 Route::middleware('auth:api')
     ->put('/tickets/{id}', 'TicketsController@updateTicket');
@@ -64,8 +64,6 @@ Route::middleware('auth:api')
 
 Route::middleware('auth:api')
     ->delete('/tickets/{ticketId}/comment/{commentId}', 'CommentsController@softDeleteComment');
-
-
 
 Route::get('/v1', function () {
     return 'coucou';

@@ -3,39 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Request;
+use App\Ticket;
+use Illuminate\Http\Request;
+
 
 class TicketsController extends Controller
 {
     /**
      * Create ticket
-     * @param addTicket $request
+     * @param createTicket $request
      */
-    public function addTicket(Request $request)
-    {
-        $bodyContent = $request->getContent();
-        $bodyContent->validate([
-            'title' => 'required|unique:posts|max:255',
-            'description' => 'required',
-            'owner' => 'required',
-            'priority' => 'required',
-            'state' => 'required'
-        ]);
+    public function createTicket(Request $request){
+        $ticketEntry = new Ticket();
+
+        $ticketEntry->title = $request->input('title');
+        $ticketEntry->description = $request->input('description');
+        $ticketEntry->priority = $request->input('priority');
+        $ticketEntry->state = $request->input('state');
+        $ticketEntry->owner = $request->input('owner');
+
+        $ticketEntry->save();
         return response($bodyContent, 200);
+        
+        
     }
 
     /**
      * Get ticket
      */
     public function getTicketById(Request $request, $id) {   
-        return response($id, 200);
+        return response('test');
     }
 
      /**
      * Get ticket by params
      */
     public function getTicketsByParams(Request $request) {   
-        return response($request, 200);
+        $bodyContent -> $request -> getContent();
+        return response('test');
     }
 
     /**
