@@ -18,7 +18,7 @@ class CreateTicketsTable extends Migration
             $table -> string('title');
             $table -> string('description');
             $table -> unsignedBigInteger('owner');
-            $table -> unsignedBigInteger('assigned');
+            $table -> unsignedBigInteger('assigned') -> nullable();
             $table -> timestamp('first_assigned') -> nullable();
             $table -> timestamp('last_assigned') -> nullable();
             $table -> unsignedBigInteger('priority');

@@ -18,7 +18,7 @@ class CommentSeeder extends Seeder
         $users = User::all();
         $tickets = Ticket::all();
 
-        factory(Comment::class) -> create([
+        factory(Comment::class, 3) -> create([
             'owner' => $users -> random(1) -> first() -> id,
             'ticket' => $tickets -> random(1) -> first() -> id,
         ]); 
