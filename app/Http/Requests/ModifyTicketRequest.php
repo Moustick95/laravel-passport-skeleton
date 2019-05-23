@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Ticket;
 
 class ModifyTicketRequest extends FormRequest
 {
@@ -14,9 +15,11 @@ class ModifyTicketRequest extends FormRequest
     public function authorize()
     {
         $user = $this->user();
-        $id = $this->route('ticketId');
-        //$ticket =
-        return !!$this->user();
+        $id = $this->route('id');
+        $owner = DB::table("tickets")->select("owner")->where("id","=",$id)->get();
+        var_dump($user["id"]);
+        var_dump($owner["id"]);
+        return $user["id"] == $owner["id"];
     }
 
     /**
