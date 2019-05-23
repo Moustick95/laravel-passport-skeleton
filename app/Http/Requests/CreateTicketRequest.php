@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTokenRequest extends FormRequest
+class CreateTicketRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class CreateTokenRequest extends FormRequest
      */
     public function authorize()
     {
-        return !$this->user();
+        return !!$this->user();
     }
 
     /**
@@ -24,8 +24,12 @@ class CreateTokenRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|string|max:255',
-            'password' => 'required|string|max:255'
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'owner' => 'required|integer',
+            'assigned' => 'optional|integer',
+            'priority' => 'required|integer',
+            'state' => 'required|integer'
         ];
     }
 }
