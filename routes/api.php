@@ -43,7 +43,7 @@ Route::middleware('auth:api')
 
 Route::middleware('auth:api')
     ->post('/tickets', 'TicketsController@addTicket');
-    
+
 Route::middleware('auth:api')
     ->put('/tickets/{id}', 'TicketsController@updateTicket');
 
