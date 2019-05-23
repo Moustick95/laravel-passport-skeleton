@@ -35,3 +35,4 @@ Route::middleware('auth:api')
     ->get('/user', 'SessionController@getUser')
     ->name('api.session.user');
 
+Route::middleware('auth:api')
