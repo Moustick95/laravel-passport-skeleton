@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteTicketRequest extends FormRequest
+class CreateCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,10 +15,8 @@ class DeleteTicketRequest extends FormRequest
     {
         $user = $this->user();
         $id = $this->route('id');
-        $owner = DB::table("tickets")->select("owner")->where("id","=",$id)->get();
-        var_dump($user["id"]);
-        var_dump($owner["id"]);
-        return $user["id"] == $owner["id"];
+        $owner_assigned = DB::table("tickets")->select("owner", "assigned")->where("id","=",$id)->get();
+        return ($user["id"] == $owner_assigned["owner"]["id"]||$user["id"] == $owner_assigned["assigned"]["id"]);
     }
 
     /**
@@ -29,7 +27,8 @@ class DeleteTicketRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'owner' => 'required|integer',
+            'content' => 'required|string|max:255',
         ];
     }
 }
