@@ -13,15 +13,26 @@ class CommentsController extends Controller
 {
     /**
      * Create comment
-     * @param $request
+     * @param Request $request
      */
-    public function createComment(Request $request)
-    {
-        $bodyContent = $request -> getContent();
-        // DB::table('users')->insert(
-        //     ['email' => 'john@example.com', 'votes' => 0]
-        // );
-        return response($bodyContent, 200);
+    public function createComment(Request $request) {
+        $body = $request -> all();
+        $parameters = $request -> route() -> parameters();
+        $values = array_merge($body, $parameters);
+        $datas = [];
+
+        foreach($values as $key => $value)
+            $datas[$key] = $value;
+
+        $id = DB::table('comments')
+                -> insertGetId($datas);
+
+        $resp = DB::table('comments')
+                -> select()
+                -> where("id", "=", $id)
+                -> get();
+
+        return response($resp, 200);
     }
 
     /**
@@ -47,8 +58,26 @@ class CommentsController extends Controller
     /**
      * Delete comment
      */
-    public function deleteComment(Request $request, $id) {   
-        return response($id, 200);
+    public function deleteComment(Request $request) {
+        $parameters = $request -> route() -> parameters();
+        $resp = [];
+
+        $result = DB::table('comments')
+                -> where($parameters)
+                ->delete();
+
+        if($result)
+            $resp = [
+                "code" => 200,
+                "responce" => "Comment deleted"
+            ];
+        else
+            $resp = [
+                "code" => 400,
+                "responce" => "Cannot delete comment"
+            ];
+
+        return response($resp, 200);
     }
 
     /**
