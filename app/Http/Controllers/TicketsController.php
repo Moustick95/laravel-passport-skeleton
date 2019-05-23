@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class TicketsController extends Controller
@@ -14,18 +15,20 @@ class TicketsController extends Controller
      * @param createTicket $request
      */
     public function createTicket(Request $request){
-        $ticketEntry = new Ticket();
+        $queries = $request -> all();
+        $datas = [];
 
-        $ticketEntry->title = $request->input('title');
-        $ticketEntry->description = $request->input('description');
-        $ticketEntry->priority = $request->input('priority');
-        $ticketEntry->state = $request->input('state');
-        $ticketEntry->owner = $request->input('owner');
+        foreach($queries as $key => $query)
+            $datas[$key] = $query;
 
-        $ticketEntry->save();
-        return response($bodyContent, 200);
-        
-        
+        $id = DB::table('tickets')->insertGetId($datas);
+
+        $resData = DB::table('tickets')
+            ->select()
+            ->where('id', '=', $id)
+            ->get();
+
+        return response($resData, 200);
     }
 
     /**
