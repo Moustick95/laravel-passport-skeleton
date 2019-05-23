@@ -68,16 +68,16 @@ class CommentsController extends Controller
 
         if($result)
             $resp = [
-                "code" => 200,
-                "responce" => "Comment deleted"
+                "code" => 204,
+                "response" => ""
             ];
         else
             $resp = [
-                "code" => 400,
-                "responce" => "Cannot delete comment"
+                "code" => 404,
+                "response" => "Cannot find comment with id " . $parameters["id"]
             ];
 
-        return response($resp, 200);
+        return response($resp, $resp["code"]);
     }
 
     /**
