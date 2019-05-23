@@ -24,6 +24,7 @@ class CreateTicketsTable extends Migration
             $table -> unsignedBigInteger('priority');
             $table -> unsignedBigInteger('state');
             $table -> timestamps();
+            $table -> timestamp('deleted_at') -> nullable();
             $table -> foreign('assigned')
                    -> references('id')
                    -> on('users')
