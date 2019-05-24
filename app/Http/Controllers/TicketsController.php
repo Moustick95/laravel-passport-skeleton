@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Ticket;
-/* use App\Http\Requests\CreateTicketRequest;
-use App\Http\Requests\GetTicketRequest; */
+use App\Http\Requests\CreateTicketRequest;
+use App\Http\Requests\GetTicketRequest;
+use App\Http\Requests\GetTicketsRequest;
+use App\Http\Requests\ModifyTicketRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Enumerators\ComparatorEnum;
@@ -57,7 +59,7 @@ class TicketsController extends Controller
      * Get ticket by params
      * @param Request $request
      */
-    public function getTicketsByParams(Request $request) {   
+    public function getTicketsByParams(GetTicketsRequest $request) {   
         $queries = $request -> all();
         $sql = DB::table('tickets');
         $wheres = [];
@@ -76,7 +78,7 @@ class TicketsController extends Controller
     /**
      * Update ticket by body
      */
-    public function updateTicket(Request $request, $id) {   
+    public function updateTicket(ModifyTicketRequest $request, $id) {   
         $queries = $request -> all();
         $datas = [];
 
@@ -91,22 +93,27 @@ class TicketsController extends Controller
      * Delete ticket
      */
     public function deleteTicket(Request $request, $id) {   
-        $queries = $request -> all();
+        $queries = $request -> query();
+        $sql = DB::table('tickets')->where('id', '=', $id)->delete();
+        $resp = [];
 
-        try {
-            DB::table('tickets').findOrFail($id)
-        } catch ($th) {
-            return response($th, 404)
+        if (sizeof()) {
+            # code...
         }
 
-        $sql = DB::table('tickets')->where('id', '=', $id)->delete();
-        return response(null, 204);
-    }
+        var_dump($queries);
 
-    /**
-     * Soft Delete ticket
-     */
-    public function softDeleteTicket(Request $request, $id) {   
-        return response($id, 200);
+        if($sql)
+            $resp = [
+                "code" => 204,
+                "response" => ""
+            ];
+        else
+            $resp = [
+                "code" => 404,
+                "response" => "Cannot find ticket with id " . $id
+            ];  
+
+        return response($resp, $resp['code']);
     }
 }

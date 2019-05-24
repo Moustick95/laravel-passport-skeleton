@@ -51,9 +51,6 @@ Route::middleware('auth:api')
     ->delete('/tickets/{id}', 'TicketsController@deleteTicket');
 
 Route::middleware('auth:api')
-    ->delete('/tickets/{id}', 'TicketsController@softDeleteTicket');
-
-Route::middleware('auth:api')
     ->get('/tickets/{ticket}/comments', 'CommentsController@getCommentsByParams');
 
 Route::middleware('auth:api')
