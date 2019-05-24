@@ -57,10 +57,12 @@ Route::middleware('auth:api')
     ->put('/tickets/{id}', 'TicketsController@updateTicket');
 
 Route::middleware('auth:api')
-    ->delete('/tickets/{id}', 'TicketsController@deleteTicket');
+    ->patch('/tickets/{id}', 'TicketsController@updateStateTicket');
 
 Route::middleware('auth:api')
-    ->delete('/tickets/{id}', 'TicketsController@softDeleteTicket');
+    ->delete('/tickets/{id}', 'TicketsController@deleteTicket');
+
+
 
 /**
  * Route comment
