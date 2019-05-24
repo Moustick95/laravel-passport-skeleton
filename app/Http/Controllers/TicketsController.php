@@ -8,6 +8,7 @@ use App\Http\Requests\CreateTicketRequest;
 use App\Http\Requests\GetTicketRequest;
 use App\Http\Requests\GetTicketsRequest;
 use App\Http\Requests\ModifyTicketRequest;
+use App\Http\Requests\ModifyTicketStateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Enumerators\ComparatorEnum;
@@ -92,17 +93,41 @@ class TicketsController extends Controller
     }
 
     public function updateStateTicket(Request $request, $id) {
-        $queries = $request -> all();
+        $query = $request -> input('state');
+
+        $currentState = DB::table('tickets')
+            ->select('state')
+            ->where('id', '=', $id)
+            ->get();
 
         $sql = DB::table('tickets')
             ->select()
             ->where('id', '=', $id)
+            ->update(['state' => $query]);
+
+        if($sql){
+            $res = DB::table('tickets')
+            ->select()
+            ->where('id', '=', $id)
             ->get();
-
-        
-        
-        
-
+            
+            $resp = [
+                "code" => 204,
+                "response" => $res
+            ];
+        } else if($currentState[0]->state == $query) {
+            $resp = [
+                "code" => 202,
+                "response" => "Cannot update a data already update " . $id
+            ]; 
+        }
+        else {
+            $resp = [
+                "code" => 404,
+                "response" => "Cannot find ticket with id " . $id
+            ]; 
+        }
+        return response($resp, $resp['code']);
     }
 
     /**
