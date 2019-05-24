@@ -19,10 +19,13 @@ class CommentsController extends Controller
         $body = $request -> all();
         $parameters = $request -> route() -> parameters();
         $values = array_merge($body, $parameters);
+        $now = now();
         $datas = [];
 
         foreach($values as $key => $value)
             $datas[$key] = $value;
+        $datas['created_at'] = $now;
+        $datas['updated_at'] = $now;
 
         $id = DB::table('comments')
                 -> insertGetId($datas);
@@ -56,15 +59,57 @@ class CommentsController extends Controller
     }
 
     /**
+     * Modify comment
+     */
+    public function updateComment(Request $request){
+        $parameters = $request -> route() -> parameters();
+        $body = $request -> all();
+        $resp = [];
+
+        $comment = (array)(DB::table('comments')
+                -> select()
+                -> where($parameters)
+                -> get()
+                -> toArray())[0];
+
+        foreach($body as $key => $value)
+            $comment[$key] = $value;
+        $comment['updated_at'] = now();
+
+        $result = DB::table('comments')
+                -> where($parameters)
+                -> update($comment);
+
+        if($result)
+            $resp = [
+                "code" => 204,
+                "response" => ""
+            ];
+        else
+            $resp = [
+                "code" => 404,
+                "response" => "Cannot find comment with id " . $parameters["id"]
+            ];
+            
+        return response($resp, $resp["code"]);
+    }
+
+    /**
      * Delete comment
      */
     public function deleteComment(Request $request) {
         $parameters = $request -> route() -> parameters();
+        $queries = $request -> query();
         $resp = [];
 
-        $result = DB::table('comments')
+        if (array_key_exists("destroy", $queries))
+            $result = DB::table('comments')
                 -> where($parameters)
-                ->delete();
+                -> delete();
+        else
+            $result = DB::table('comments')
+                -> where($parameters)
+                -> update(["deleted_at" => now()]);
 
         if($result)
             $resp = [
@@ -80,10 +125,4 @@ class CommentsController extends Controller
         return response($resp, $resp["code"]);
     }
 
-    /**
-     * Soft Delete comment
-     */
-    public function softDeleteComment(Request $request, $id) {   
-        return response($id, 200);
-    }
 }
