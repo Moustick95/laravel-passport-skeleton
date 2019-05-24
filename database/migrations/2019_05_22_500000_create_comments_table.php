@@ -19,6 +19,7 @@ class CreateCommentsTable extends Migration
             $table -> unsignedBigInteger('ticket');
             $table -> text('content');
             $table -> timestamps();
+            $table -> timestamp('deleted_at') -> nullable();
             $table -> foreign('owner')
                    -> references('id')
                    -> on('users')
