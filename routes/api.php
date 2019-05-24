@@ -51,8 +51,8 @@ Route::middleware('auth:api')
     ->get('/tickets', 'TicketsController@getTicketsByParams');
 
 Route::middleware('auth:api')
-    ->post('/tickets', 'TicketsController@addTicket');
-
+    ->post('/tickets', 'TicketsController@createTicket');
+    
 Route::middleware('auth:api')
     ->put('/tickets/{id}', 'TicketsController@updateTicket');
 
