@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Ticket;
 
-class DestroyTokenRequest extends FormRequest
+class ModifyTicketStateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,8 +16,8 @@ class DestroyTokenRequest extends FormRequest
     {
         $user = $this->user();
         $id = $this->route('id');
-        $owner = DB::table("tickets")->select("owner")->where("id","=",$id)->get();
-        return $user["id"] == $owner["id"];
+        $assigned = DB::table("tickets")->select("assigned")->where("id","=",$id)->get();
+        return $user["id"] == $assigned["id"];
     }
 
     /**
@@ -27,7 +28,7 @@ class DestroyTokenRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'state' => 'required|integer'
         ];
     }
 }

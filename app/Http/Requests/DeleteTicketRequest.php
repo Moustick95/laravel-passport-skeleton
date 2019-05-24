@@ -13,12 +13,7 @@ class DeleteTicketRequest extends FormRequest
      */
     public function authorize()
     {
-        $user = $this->user();
-        $id = $this->route('id');
-        $owner = DB::table("tickets")->select("owner")->where("id","=",$id)->get();
-        var_dump($user["id"]);
-        var_dump($owner["id"]);
-        return $user["id"] == $owner["id"];
+        return !!$this->user();
     }
 
     /**
