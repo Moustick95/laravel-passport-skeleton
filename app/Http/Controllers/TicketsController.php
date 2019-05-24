@@ -84,9 +84,25 @@ class TicketsController extends Controller
 
         foreach($queries as $key => $query)
             $datas[$key] = $query;
+
+        $datas['updated_at'] = now();
         
         $sql = DB::table('tickets')->where('id', '=', $id)->update($datas);
         return response($request, 200);
+    }
+
+    public function updateStateTicket(Request $request, $id) {
+        $queries = $request -> all();
+
+        $sql = DB::table('tickets')
+            ->select()
+            ->where('id', '=', $id)
+            ->get();
+
+        
+        
+        
+
     }
 
     /**
@@ -94,14 +110,16 @@ class TicketsController extends Controller
      */
     public function deleteTicket(Request $request, $id) {   
         $queries = $request -> query();
-        $sql = DB::table('tickets')->where('id', '=', $id)->delete();
+        $parameters = $request -> route() -> parameters();
         $resp = [];
 
-        if (sizeof()) {
-            # code...
+        if (array_key_exists("destroy", $queries)) {
+            $sql = DB::table('tickets')->where('id', '=', $id)->delete();            
+        } else {
+            $sql = DB::table('tickets')
+                -> where($parameters)
+                -> update(["deleted_at" => now()]);
         }
-
-        var_dump($queries);
 
         if($sql)
             $resp = [
