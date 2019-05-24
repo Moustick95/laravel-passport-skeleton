@@ -21,6 +21,11 @@ use Illuminate\Http\Request;
 | Those routes must be used by local API clients, see SessionController.
 |
 */
+
+/**
+ * Route auth
+ */
+
 Route::post('/token', 'SessionController@createToken')
     ->name('api.session.token.create');
 
@@ -34,6 +39,10 @@ Route::middleware('auth:api')
 Route::middleware('auth:api')
     ->get('/user', 'SessionController@getUser')
     ->name('api.session.user');
+
+/**
+ * Route ticket
+ */
 
 Route::middleware('auth:api')
     ->get('/tickets/{id}', 'TicketsController@getTicketById');
@@ -53,6 +62,10 @@ Route::middleware('auth:api')
 Route::middleware('auth:api')
     ->delete('/tickets/{id}', 'TicketsController@softDeleteTicket');
 
+/**
+ * Route comment
+ */
+
 Route::middleware('auth:api')
     ->get('/tickets/{ticket}/comments', 'CommentsController@getCommentsByParams');
 
@@ -60,13 +73,7 @@ Route::middleware('auth:api')
     ->post('/tickets/{ticket}/comments', 'CommentsController@createComment');
 
 Route::middleware('auth:api')
-    ->delete('/tickets/{ticket}/comments/{id}', 'CommentsController@deleteComment');
+    ->put('/tickets/{ticket}/comments/{id}', 'CommentsController@updateComment');
 
 Route::middleware('auth:api')
-    ->delete('/tickets/{ticketId}/comment/{commentId}', 'CommentsController@softDeleteComment');
-
-
-
-Route::get('/v1', function () {
-    return 'coucou';
-});
+    ->delete('/tickets/{ticket}/comments/{id}', 'CommentsController@deleteComment');
