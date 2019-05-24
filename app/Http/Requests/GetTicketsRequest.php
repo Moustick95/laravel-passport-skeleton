@@ -24,13 +24,20 @@ class GetTicketsRequest extends FormRequest
     public function rules()
     {
         return [
-            'users' => 'optional|array',
-            'before' => 'optional|date',
-            'after' => 'optional|date',
-            'creators' => 'optional|array',
-            'assigned_to' => 'optional|array',
-            'priorities' => 'optional|array',
-            'states' => 'optional|array'
+            'id' => 'optional|array',
+            'title' => 'optional|array',
+            'description' => 'optional|array',
+            'owner' => 'optional|array',
+            'assigned' => 'optional|array',
+            'first_assigned' => 'optional|array',
+            'last_assigned' => 'optional|array',
+            'priority' => 'optional|array',
+            'state' => 'optional|array',
+            'deleted_at' => 'optional|array',
+            'assigned.id' => 'optional|integer',
+            'owner.id' => 'optional|integer',
+            'priority.id' => 'optional|integer',
+            'state.id' => 'optional|integer'
         ];
     }
 }
